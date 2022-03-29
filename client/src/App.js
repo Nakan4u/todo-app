@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from "react";
 import { nanoid } from "nanoid";
 
 import './App.css';
-import { getTodos } from "./api";
+import { httpGetTodos, httpAddTodo, httpUpdateTodo, httpDeleteTodo } from "./api";
 
 const FILTER_MAP = {
   all: () => true,
@@ -33,7 +33,7 @@ function App() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    const data = await (await getTodos()).json();
+    const data = await (await httpGetTodos()).json();
     const parsedData = data.map(todo => ({
       ...todo,
       date: new Date(todo.date)
@@ -41,7 +41,7 @@ function App() {
     setItems(parsedData);
   }, [])
 
-  const onAddTodo = (e) => {
+  const onAddTodo = async (e) => {
     e.preventDefault();
     if (!todoName.length) return;
     const newItem = {
@@ -50,18 +50,42 @@ function App() {
       date: new Date(),
       done: false,
     }
-    setItems([...items, newItem]);
-    setTodoName("");
+    try {
+      await httpAddTodo(newItem);
+      setItems([...items, newItem]);
+      setTodoName("");
+    }
+    catch (error) {
+      throw new Error(error);
+    }
   }
 
-  const onUpdateTodo = useCallback((id) => {
+  const onUpdateTodo = useCallback(async (id) => {
     const newItems = items.map(item => {
       if (item.id === id) {
         return { ...item, done: !item.done };
       }
       return item;
     });
-    setItems(newItems);
+    const newTodo = newItems.find(item => item.id === id);
+    try {
+      await httpUpdateTodo(newTodo);
+      setItems(newItems);
+    }
+    catch (error) {
+      throw new Error(error);
+    }
+  }, [items]);
+
+  const onDeleteTodo = useCallback(async (id) => {
+    const newItems = items.filter(item => item.id !== id);
+    try {
+      await httpDeleteTodo(id);
+      setItems(newItems);
+    }
+    catch (error) {
+      throw new Error(error);
+    }
   }, [items]);
 
   const filterList = FILTER_NAMES.map(name => (
@@ -83,6 +107,7 @@ function App() {
             {name}
           </label>
           <span className="date">{date.toLocaleTimeString()}</span>
+          <button onClick={() => onDeleteTodo(id)}>x</button>
         </li>
       )), [items, filter, onUpdateTodo])
 

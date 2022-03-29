@@ -52,7 +52,7 @@
   margin-bottom: 10px;
 }
 
-.App li.done {
+.App li.done label {
   text-decoration: line-through;
 }
 
