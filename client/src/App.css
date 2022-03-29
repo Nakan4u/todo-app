@@ -11,6 +11,7 @@
   height: 50vh;
   border: 1px solid black;
   text-align: center;
+  overflow: auto;
 }
 
 .App h1 { 
@@ -31,12 +32,11 @@
   height: 26px;
 }
 
-.App nav a {
-  margin: 0 10px;
-  text-decoration: none;
+.App nav button {
+  margin: 0 5px;
 }
  
-.App nav .active {
+.App nav button.active {
   text-decoration: underline;
 }
 
@@ -46,11 +46,19 @@
 }
 
 .App li {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 10px;
 }
 
-.App li.done{
+.App li.done {
   text-decoration: line-through;
+}
+
+.App li .date {
+  text-decoration: italic;
+  color: gray;
 }
 
 .App li input {
