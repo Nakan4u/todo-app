@@ -1,22 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { nanoid } from "nanoid";
 
 import './App.css';
-
-const list = [
-  {
-    id: nanoid(),
-    name: "todo item 1",
-    date: new Date(),
-    done: false,
-  },
-  {
-    id: nanoid(),
-    name: "todo item 2",
-    date: new Date(),
-    done: true,
-  }
-];
+import { getTodos } from "./api";
 
 const FILTER_MAP = {
   all: () => true,
@@ -41,14 +27,25 @@ function FilterButton(props) {
 }
 
 function App() {
-  const [items, setItems] = useState(list);
+  const [items, setItems] = useState([]);
   const [todoName, setTodoName] = useState("");
   const [filter, setFilter] = useState("all");
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(async () => {
+    const data = await (await getTodos()).json();
+    const parsedData = data.map(todo => ({
+      ...todo,
+      date: new Date(todo.date)
+    }))
+    setItems(parsedData);
+  }, [])
 
   const onAddTodo = (e) => {
     e.preventDefault();
     if (!todoName.length) return;
     const newItem = {
+      id: nanoid(),
       name: todoName,
       date: new Date(),
       done: false,
@@ -57,7 +54,7 @@ function App() {
     setTodoName("");
   }
 
-  const onUpdateTodo = (id) => {
+  const onUpdateTodo = useCallback((id) => {
     const newItems = items.map(item => {
       if (item.id === id) {
         return { ...item, done: !item.done };
@@ -65,7 +62,7 @@ function App() {
       return item;
     });
     setItems(newItems);
-  }
+  }, [items]);
 
   const filterList = FILTER_NAMES.map(name => (
     <FilterButton
@@ -87,7 +84,7 @@ function App() {
           </label>
           <span className="date">{date.toLocaleTimeString()}</span>
         </li>
-      )), [items, filter])
+      )), [items, filter, onUpdateTodo])
 
   return (
     <div className="App">
