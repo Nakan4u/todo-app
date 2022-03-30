@@ -3,7 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
 
-const todosRouter = require('./todos.router');
+const todosRouter = require('./routes/todos.router.js');
 
 const PORT = 8000;
 

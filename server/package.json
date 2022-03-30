@@ -4,17 +4,28 @@
   "description": "express study app",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test-watch": "jest --watch",
+    "test": "jest",
+    "test-watch": "jest --watch --maxWorkers=1",
     "start": "node server.js",
     "watch": "nodemon src/server.js"
   },
   "author": "Nakan4u",
   "license": "ISC",
+  "jest": {
+    "testEnvironment": "node",
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "jest": "^27.5.1",
+    "supertest": "^6.2.2"
   }
 }
