@@ -12,11 +12,7 @@
   "author": "Nakan4u",
   "license": "ISC",
   "jest": {
-    "testEnvironment": "node",
-    "moduleDirectories": [
-      "node_modules",
-      "src"
-    ]
+    "testEnvironment": "node"
   },
   "dependencies": {
     "cors": "^2.8.5",
