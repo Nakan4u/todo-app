@@ -23,7 +23,6 @@ const addTodo = async (req, res) => {
   }
   try {
     await saveTodo(newTodo);
-    data.push(newTodo);
     return res.status(201).json({
       ok: true
     });
