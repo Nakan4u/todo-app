@@ -10,12 +10,10 @@ const newTodo = {
 
 describe("Test GET /todos", () => {
   test('it should respond with 200 success', async () => {
-    const response = await request(app)
+    await request(app)
       .get('/todos')
       .expect('Content-Type', /json/)
       .expect(200);
-
-    expect(response.body.length).toEqual(data.length);
   });
 });
 
