@@ -59,6 +59,7 @@
 .App li .date {
   text-decoration: italic;
   color: gray;
+  margin-right: 10px;
 }
 
 .App li input {

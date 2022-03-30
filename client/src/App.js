@@ -56,7 +56,7 @@ function App() {
       setTodoName("");
     }
     catch (error) {
-      throw new Error(error);
+      console.error("error with add todo ", error);
     }
   }
 
@@ -73,7 +73,7 @@ function App() {
       setItems(newItems);
     }
     catch (error) {
-      throw new Error(error);
+      console.error("error with update todo ", error);
     }
   }, [items]);
 
@@ -84,7 +84,7 @@ function App() {
       setItems(newItems);
     }
     catch (error) {
-      throw new Error(error);
+      console.error("error with delete todo ", error);
     }
   }, [items]);
 
@@ -106,10 +106,12 @@ function App() {
             <input type="checkbox" checked={done} onChange={() => onUpdateTodo(id)} />
             {name}
           </label>
-          <span className="date">{date.toLocaleTimeString()}</span>
-          <button onClick={() => onDeleteTodo(id)}>x</button>
+          <div>
+            <span className="date">{date.toLocaleTimeString()}</span>
+            <button onClick={() => onDeleteTodo(id)}>x</button>
+          </div>
         </li>
-      )), [items, filter, onUpdateTodo])
+      )), [items, filter, onDeleteTodo, onUpdateTodo])
 
   return (
     <div className="App">
