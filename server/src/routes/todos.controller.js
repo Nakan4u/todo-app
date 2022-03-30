@@ -1,10 +1,19 @@
-const data = require('../data');
+const { getAllTodos, saveTodo, changeTodo, deleteTodo } = require('../models/todos.model');
 
-const getTodos = (req, res) => {
-  res.json(data);
+const getTodos = async (req, res) => {
+  try {
+    const data = await getAllTodos()
+    return res.json(data);
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      error: "error with getting list"
+    });
+  }
 };
 
-const addTodo = (req, res) => {
+const addTodo = async (req, res) => {
   const newTodo = req.body;
 
   if (!newTodo.name) {
@@ -12,37 +21,48 @@ const addTodo = (req, res) => {
       error: "Missing required name property"
     })
   }
-  data.push(newTodo);
-  return res.status(201).json(newTodo);
+  try {
+    await saveTodo(newTodo);
+    data.push(newTodo);
+    return res.status(201).json({
+      ok: true
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      error: "error with update"
+    });
+  }
 };
 
-const updateTodo = (req, res) => {
+const updateTodo = async (req, res) => {
   const newTodo = req.body;
-  const updateIndex = data.findIndex(item => item.id === newTodo.id);
-
-  if (updateIndex === -1) {
+  try {
+    await changeTodo(newTodo);
+    return res.status(200).json({
+      ok: true
+    });
+  } catch (error) {
+    console.error(error);
     return res.status(404).json({
       error: "todo not found"
     })
   }
-  data[updateIndex] = newTodo;
-  return res.status(200).json({
-    ok: true
-  });
 };
 
-const removeTodo = (req, res) => {
+const removeTodo = async (req, res) => {
   const { id } = req.params;
-  const todoIndex = data.findIndex(item => item.id.toString() === id);
-  if (!id || todoIndex === -1) {
+  try {
+    await deleteTodo(id);
+    return res.status(200).json({
+      ok: true
+    });
+  } catch (error) {
+    console.error(error);
     return res.status(404).json({
       error: "todo not found"
     })
   }
-  data.splice(todoIndex, 1);
-  return res.status(200).json({
-    ok: true
-  });
 };
 
 module.exports = {

@@ -1,26 +1,20 @@
-const express = require('express');
-const path = require('path');
-const cors = require('cors');
-const morgan = require('morgan');
+const http = require('http');
 
-const todosRouter = require('./routes/todos.router.js');
+require('dotenv').config();
 
-const PORT = 8000;
+const app = require('./app');
+const { mongoConnect } = require('./services/mongo');
 
-const app = express();
+const PORT = process.env.PORT || 8000;
 
-app.use(cors());
-app.use(express.json());
-app.use(morgan('combined'));
+const server = http.createServer(app);
 
-app.get('/', (req, res) => {
-  res.send("Hello world!");
-});
+async function startServer() {
+  await mongoConnect();
 
-app.use('/todos', todosRouter);
+  server.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}...`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`Listening on ${PORT}...`);
-});
-
-module.exports = app;
+startServer();
