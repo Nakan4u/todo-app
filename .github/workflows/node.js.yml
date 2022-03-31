@@ -12,17 +12,18 @@ on:
 jobs:
   build:
 
+    env:
+      CI: true
+      MONGO_URL: mongodb://localhost/todo
+
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [16.x]
-        mongodb-version: ['5.x']
+        mongodb-version: ['5.0']
 
     steps:
-      env:
-        CI: true
-        MONGO_URL: mongodb://localhost/todo
 
     - name: Git checkout
       uses: actions/checkout@v3
