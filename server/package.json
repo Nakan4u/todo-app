@@ -12,7 +12,8 @@
   "author": "Nakan4u",
   "license": "ISC",
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "preset": "@shelf/jest-mongodb"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -23,6 +24,7 @@
     "nodemon": "^2.0.15"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^2.2.1",
     "jest": "^27.5.1",
     "supertest": "^6.2.2"
   }
