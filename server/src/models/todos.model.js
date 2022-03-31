@@ -1,5 +1,22 @@
 const todosDB = require('./todos.mongo');
 
+const testTodo = {
+  id: '0',
+  name: 'Hellow world!',
+  date: new Date(),
+  done: false,
+}
+
+async function findTodo(id) {
+  return await todosDB.findOne({
+    id
+  })
+}
+
+async function setTestTodo() {
+  return await saveTodo(testTodo);
+}
+
 async function getAllTodos() {
   return await todosDB.find({}, {
     '_id': 0, '__v': 0,
@@ -33,4 +50,7 @@ module.exports = {
   saveTodo,
   changeTodo,
   deleteTodo,
+  findTodo,
+  setTestTodo,
+  testTodo,
 }
