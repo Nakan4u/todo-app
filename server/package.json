@@ -2,11 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "express study app",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "jest",
     "test-watch": "jest --watch --maxWorkers=1",
-    "start": "node server.js",
+    "start": "node src/server.js",
     "watch": "nodemon src/server.js"
   },
   "author": "Nakan4u",
